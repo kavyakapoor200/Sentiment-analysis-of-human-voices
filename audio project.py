@@ -1,3 +1,4 @@
+
 import os
 import glob
 import librosa
@@ -7,11 +8,11 @@ from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import LabelEncoder
 
-# Define the path to the dataset
-audio_dir = r'C:\Users\pc\Documents\audio project\actor_01'
+# Define the path to the base dataset directory (parent folder containing actor folders)
+base_audio_dir = r'C:\Users\pc\Documents\audio project'
 
-# Use glob to collect all audio files (assuming all audio files are in .wav format)
-audio_files = glob.glob(os.path.join(audio_dir, '**', '*.wav'), recursive=True)
+# Collect all audio files recursively from all actor folders
+audio_files = glob.glob(os.path.join(base_audio_dir, '**', '*.wav'), recursive=True)
 
 # Print total number of audio files
 print(f"Total audio files found: {len(audio_files)}")
@@ -38,12 +39,6 @@ def get_emotion_from_filename(file_name):
     else:
         print(f"Filename {file_name} doesn't match expected format.")
         return None  # Return None if the format is incorrect
-
-# Test the function by printing the emotion for a few filenames
-for file_path in audio_files[:10]:
-    file_name = os.path.basename(file_path)
-    emotion = get_emotion_from_filename(file_name)
-    print(f"File: {file_name} | Extracted Emotion: {emotion}")
 
 # Function to extract MFCC features from an audio file
 def extract_mfcc_features(file_path):
@@ -99,4 +94,3 @@ else:
     # Evaluate the model
     print("Accuracy:", accuracy_score(y_test, y_pred))
     print("Classification Report:\n", classification_report(y_test, y_pred, target_names=label_encoder.classes_))
-
